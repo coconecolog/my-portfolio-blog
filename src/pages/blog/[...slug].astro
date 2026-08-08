@@ -1,20 +1,239 @@
 ---
-import { type CollectionEntry, getCollection, render } from 'astro:content';
-import BlogPost from '../../layouts/BlogPost.astro';
+// 記事詳細ページ(動的テンプレート)
+// Figma参照: node 1:3570 "Article"
+// 1本記事を書くごとに、このテンプレートで自動的にページが生成されます。
+//
+// 【重要】ナビゲーション/フッターのアイコン画像はFigmaの一時URL(約7日で失効)です。
+// 本番反映前に /public/images/ 等にダウンロードして差し替えてください。
+import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: post,
-	}));
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
 }
-type Props = CollectionEntry<'blog'>;
 
-const post = Astro.props;
+const { post } = Astro.props;
 const { Content } = await render(post);
+
+// Related Blog: 同じコレクションから、この記事以外を新しい順に3件
+const allPosts = await getCollection("blog");
+const relatedPosts = allPosts
+  .filter((p) => p.slug !== post.slug)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+// 【TODO】Related White-Paper: WhitePaperDownloadページ実装時に
+// ホワイトペーパー用のコンテンツコレクションを作成し、
+// 記事のfrontmatterから関連資料を指定できるようにする想定。
+// 現時点ではFigmaのプレースホルダー画像を仮表示しています。
+const wpPlaceholder1 = "https://www.figma.com/api/mcp/asset/74477680-6e02-4181-9cf4-61f88dad1381.png";
+const wpPlaceholder2 = "https://www.figma.com/api/mcp/asset/c0f3339b-067e-4296-8b1b-4261c6d4659c.png";
+const wpPlaceholder3 = "https://www.figma.com/api/mcp/asset/a59305fe-55f1-410e-bf16-49fc2be11f20.png";
+
+const socialIcon1 = "https://www.figma.com/api/mcp/asset/b92759ef-32ef-44cf-b2cc-256c0e26b19f.svg";
+const socialIcon2 = "https://www.figma.com/api/mcp/asset/a654875f-7956-4089-89be-fda5eb3015d6.svg";
+const socialIcon3 = "https://www.figma.com/api/mcp/asset/b93fd3fd-0505-42df-9548-6b6d58d3741d.svg";
+const socialIcon4 = "https://www.figma.com/api/mcp/asset/350029e0-3ecb-48bc-b8d5-301cc1aa28fd.svg";
 ---
 
-<BlogPost {...post.data}>
-	<Content />
-</BlogPost>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{post.data.title} | Coconeco-log</title>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <a class="nav__site-name" href="/">Site name</a>
+    <ul class="nav__items">
+      <li><a href="/">Page</a></li>
+      <li><a href="/">Page</a></li>
+      <li><a href="/">Page</a></li>
+      <li><a class="nav__button" href="/">Button</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <!-- Article header -->
+    <header class="article-header">
+      <h1>{post.data.title}</h1>
+      <p class="article-header__subheading">{post.data.description}</p>
+    </header>
+
+    {post.data.heroImage && (
+      <div class="article-hero">
+        <img src={post.data.heroImage} alt={post.data.title} />
+      </div>
+    )}
+
+    <!-- 記事本文(Markdown/MDXの中身がそのまま展開されます) -->
+    <article class="article-body">
+      <Content />
+    </article>
+
+    <!-- Related White-Paper -->
+    <section class="section">
+      <h2 class="section__heading section__heading--sm">Related White-Paper</h2>
+      <div class="card-grid">
+        <a class="card" href="/">
+          <div class="card__image" style={`background-image:url(${wpPlaceholder1})`}></div>
+          <div class="card__copy">
+            <h3>Product</h3>
+            <p>Description of first product</p>
+          </div>
+        </a>
+        <a class="card" href="/">
+          <div class="card__image" style={`background-image:url(${wpPlaceholder2})`}></div>
+          <div class="card__copy">
+            <h3>Product</h3>
+            <p>Description of second product</p>
+          </div>
+        </a>
+        <a class="card" href="/">
+          <div class="card__image" style={`background-image:url(${wpPlaceholder3})`}></div>
+          <div class="card__copy">
+            <h3>Product</h3>
+            <p>Description of third product</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Related Blog -->
+    <section class="section">
+      <h2 class="section__heading">Related Blog</h2>
+      <div class="card-grid">
+        {relatedPosts.map((p) => (
+          <a class="card" href={`/blog/${p.slug}/`}>
+            <div
+              class="card__image"
+              style={p.data.heroImage ? `background-image:url(${p.data.heroImage})` : ""}
+            ></div>
+            <div class="card__copy">
+              <h3>{p.data.title}</h3>
+              <p>{p.data.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <p>お問い合わせ</p>
+      <a class="button button--dark" href="/">Button</a>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__top">
+      <span class="footer__site-name">Site name</span>
+      <div class="footer__columns">
+        <div class="footer__column">
+          <span class="footer__topic">Topic</span>
+          <a href="/">Page</a>
+          <a href="/">Page</a>
+          <a href="/">Page</a>
+        </div>
+        <div class="footer__column">
+          <span class="footer__topic">Topic</span>
+          <a href="/">Page</a>
+          <a href="/">Page</a>
+          <a href="/">Page</a>
+        </div>
+        <div class="footer__column">
+          <span class="footer__topic">Topic</span>
+          <a href="/">Page</a>
+          <a href="/">Page</a>
+          <a href="/">Page</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__social">
+      <a href="/"><img src={socialIcon1} alt="" /></a>
+      <a href="/"><img src={socialIcon2} alt="" /></a>
+      <a href="/"><img src={socialIcon3} alt="" /></a>
+      <a href="/"><img src={socialIcon4} alt="" /></a>
+    </div>
+  </footer>
+</body>
+</html>
+
+<style>
+  :root {
+    --color-text: #000000;
+    --color-muted: #828282;
+    --color-border: #e0e0e0;
+    --color-bg-soft: #f7f7f7;
+    --font-body: 'Inter', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font-body); color: var(--color-text); }
+  a { color: inherit; text-decoration: none; }
+  h1, h2, h3, p { margin: 0; }
+
+  .nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 56px 80px;
+  }
+  .nav__site-name { font-size: 20px; font-weight: 500; }
+  .nav__items { display: flex; align-items: center; gap: 48px; list-style: none; margin: 0; padding: 0; }
+  .nav__items a { font-size: 20px; font-weight: 500; }
+  .nav__button { background: #000; color: #fff !important; border-radius: 8px; padding: 14px 24px; font-size: 16px; }
+
+  .article-header { max-width: 733px; padding: 0 80px; margin-bottom: 40px; display: flex; flex-direction: column; gap: 24px; }
+  .article-header h1 { font-size: 64px; font-weight: 700; letter-spacing: -1.28px; line-height: 1.1; }
+  .article-header__subheading { font-size: 24px; color: rgba(0,0,0,0.75); line-height: 1.5; }
+
+  .article-hero { padding: 0 80px; margin-bottom: 64px; }
+  .article-hero img { width: 100%; max-height: 650px; object-fit: cover; border-radius: 8px; }
+
+  .article-body {
+    max-width: 842px; margin: 0 auto 96px; padding: 0 80px;
+    font-size: 20px; line-height: 1.5; color: var(--color-text);
+    display: flex; flex-direction: column; gap: 32px;
+  }
+  .article-body :global(h2) { font-size: 28px; font-weight: 700; margin-top: 16px; }
+  .article-body :global(p) { margin: 0; }
+  .article-body :global(img) { width: 100%; border-radius: 8px; }
+
+  .section { padding: 96px 80px; max-width: 1440px; margin: 0 auto; }
+  .section__heading { font-size: 48px; font-weight: 600; letter-spacing: -0.96px; margin-bottom: 48px; }
+  .section__heading--sm { font-size: 40px; }
+
+  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .card { display: flex; flex-direction: column; gap: 24px; }
+  .card__image { background-color: var(--color-bg-soft); background-size: cover; background-position: center; border-radius: 8px; aspect-ratio: 404 / 238; }
+  .card__copy h3 { font-size: 24px; font-weight: 500; margin-bottom: 4px; }
+  .card__copy p { font-size: 20px; color: var(--color-muted); }
+
+  .cta {
+    background: var(--color-bg-soft); padding: 64px 80px; margin: 0 80px 48px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .cta p { font-size: 48px; font-weight: 600; letter-spacing: -0.96px; }
+  .button { display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 24px; font-weight: 500; padding: 20px 32px; }
+  .button--dark { background: #000; color: #fff !important; }
+
+  .footer { padding: 48px 80px; border-top: 1px solid var(--color-border); margin-top: 48px; }
+  .footer__top { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; margin-bottom: 32px; }
+  .footer__site-name { font-size: 24px; }
+  .footer__columns { display: flex; gap: 80px; }
+  .footer__column { display: flex; flex-direction: column; gap: 24px; }
+  .footer__topic { font-weight: 500; }
+  .footer__column a { color: #454545; }
+  .footer__social { display: flex; gap: 8px; }
+  .footer__social img { width: 24px; height: 24px; padding: 8px; }
+
+  @media (max-width: 900px) {
+    .nav, .section, .article-header, .article-hero, .article-body, .footer { padding-left: 24px; padding-right: 24px; }
+    .article-header h1 { font-size: 40px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .cta { flex-direction: column; align-items: flex-start; gap: 24px; margin-left: 24px; margin-right: 24px; }
+  }
+</style>
