@@ -10,7 +10,7 @@ import { getCollection, render } from "astro:content";
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
   return posts.map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
     props: { post },
   }));
 }
@@ -21,7 +21,7 @@ const { Content } = await render(post);
 // Related Blog: 同じコレクションから、この記事以外を新しい順に3件
 const allPosts = await getCollection("blog");
 const relatedPosts = allPosts
-  .filter((p) => p.slug !== post.slug)
+  .filter((p) => p.id !== post.id)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 
@@ -108,7 +108,7 @@ const socialIcon4 = "https://www.figma.com/api/mcp/asset/350029e0-3ecb-48bc-b8d5
       <h2 class="section__heading">Related Blog</h2>
       <div class="card-grid">
         {relatedPosts.map((p) => (
-          <a class="card" href={`/blog/${p.slug}/`}>
+          <a class="card" href={`/blog/${p.id}/`}>
             <div
               class="card__image"
               style={p.data.heroImage ? `background-image:url(${p.data.heroImage})` : ""}
