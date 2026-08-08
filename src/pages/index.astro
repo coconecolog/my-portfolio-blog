@@ -61,7 +61,7 @@ const socialIcon4 = "https://www.figma.com/api/mcp/asset/a7e71ab1-6f84-424e-b1ee
       <h2 class="section__heading">New Article</h2>
       <div class="article-grid">
         {latestArticles.map((post) => (
-          <a class="card" href={`/blog/${post.slug}/`}>
+          <a class="card" href={`/blog/${post.id}/`}>
             <div
               class="card__image"
               style={post.data.heroImage ? `background-image:url(${post.data.heroImage})` : ""}
