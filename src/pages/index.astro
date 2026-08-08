@@ -1,49 +1,269 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+// Top page (トップページ)
+// Figma参照: node 1:4684 "Top"
+//
+// 【重要】画像はFigmaの一時URL(約7日で失効)を使っています。
+// 本番反映前に、以下の画像を /public/images/top/ 等にダウンロードして
+// ローカルパスに差し替えてください。
+import { getCollection } from "astro:content";
+
+// 「New Article」セクション: 実際のブログ記事から最新4件を動的に取得し、
+// 各記事の heroImage をキービジュアルとして表示する。
+// ※ フィールド名(heroImage / pubDate)は Astro公式ブログ雛形のデフォルト。
+//    実際のリポジトリの src/content/config.ts のフィールド名と異なる場合は
+//    ここを合わせて調整してください。
+const allPosts = await getCollection("blog");
+const latestArticles = allPosts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 4);
+
+const heroImage = "https://www.figma.com/api/mcp/asset/ea8b9f06-f8e8-4fc8-aa3f-342b57a474c7.png";
+const featuredImage = "https://www.figma.com/api/mcp/asset/ea8b9f06-f8e8-4fc8-aa3f-342b57a474c7.png";
+const cardImage1 = "https://www.figma.com/api/mcp/asset/f89705d2-ddc9-4f4e-8267-0e3858e7c255.png";
+const cardImage2 = "https://www.figma.com/api/mcp/asset/f2e85323-e92b-4d4e-a519-06328506ab8a.png";
+const contactImage = "https://www.figma.com/api/mcp/asset/f2e85323-e92b-4d4e-a519-06328506ab8a.png";
+const socialIcon1 = "https://www.figma.com/api/mcp/asset/1f540cd6-e570-452b-b3a0-992838053ff9.svg";
+const socialIcon2 = "https://www.figma.com/api/mcp/asset/8ca994cc-9fef-4823-89a9-98e64624fe87.svg";
+const socialIcon3 = "https://www.figma.com/api/mcp/asset/f589d2cc-41a2-413e-8267-0593620727e4.svg";
+const socialIcon4 = "https://www.figma.com/api/mcp/asset/a7e71ab1-6f84-424e-b1ee-7d0f43faca8b.svg";
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Coconeco-log</title>
+</head>
+<body>
+  <!-- Hero + Navigation -->
+  <header class="hero">
+    <img class="hero__bg" src={heroImage} alt="" />
+    <div class="hero__dimmer"></div>
+    <nav class="nav nav--overlay">
+      <a class="nav__site-name" href="/">Coconeco-log</a>
+      <ul class="nav__items">
+        <li><a href="/">Page</a></li>
+        <li><a href="/">Page</a></li>
+        <li><a href="/">Page</a></li>
+        <li><a class="nav__button" href="/">Button</a></li>
+      </ul>
+    </nav>
+    <div class="hero__copy">
+      <h1>Shop title</h1>
+      <p>Subheading with description of your shopping site</p>
+      <a class="button button--light" href="/">Button</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- New Article -->
+    <section class="section">
+      <h2 class="section__heading">New Article</h2>
+      <div class="article-grid">
+        {latestArticles.map((post) => (
+          <a class="card" href={`/blog/${post.slug}/`}>
+            <div
+              class="card__image"
+              style={post.data.heroImage ? `background-image:url(${post.data.heroImage})` : ""}
+            ></div>
+            <div class="card__copy">
+              <h3>{post.data.title}</h3>
+              <p>{post.data.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Featured White Paper -->
+    <section class="section">
+      <h2 class="section__heading">Featured White Paper</h2>
+      <div class="whitepaper-grid">
+        <a class="card card--big" href="/">
+          <div class="card__image" style={`background-image:url(${featuredImage})`}></div>
+          <div class="card__copy">
+            <h3>Featured product</h3>
+            <p>Description of featured product</p>
+            <span class="price">$10.99</span>
+          </div>
+        </a>
+        <div class="whitepaper-grid__side">
+          <a class="card" href="/">
+            <div class="card__image" style={`background-image:url(${cardImage1})`}></div>
+            <div class="card__copy">
+              <h3>Product</h3>
+              <p>Description of top product</p>
+              <span class="price">$10.99</span>
+            </div>
+          </a>
+          <a class="card" href="/">
+            <div class="card__image" style={`background-image:url(${cardImage2})`}></div>
+            <div class="card__copy">
+              <h3>Product</h3>
+              <p>Description of lower product</p>
+              <span class="price">$10.99</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section">
+      <h2 class="section__heading">お問い合わせフォーム</h2>
+      <div class="contact-grid">
+        <form class="contact-form">
+          <div class="field-row">
+            <label class="field">
+              <span>First name</span>
+              <input type="text" name="firstName" placeholder="Jane" />
+            </label>
+            <label class="field">
+              <span>Last name</span>
+              <input type="text" name="lastName" placeholder="Smitherton" />
+            </label>
+          </div>
+          <label class="field">
+            <span>Email address</span>
+            <input type="email" name="email" placeholder="email@janesfakedomain.net" />
+          </label>
+          <label class="field">
+            <span>Your message</span>
+            <textarea name="message" rows="5" placeholder="Enter your question or message"></textarea>
+          </label>
+          <button type="submit" class="button button--dark button--block">Submit</button>
+        </form>
+        <div class="contact-image" style={`background-image:url(${contactImage})`}></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__top">
+      <span class="footer__site-name">Site name</span>
+      <div class="footer__columns">
+        <div class="footer__column">
+          <span class="footer__topic">Topic</span>
+          <a href="/">Page</a>
+          <a href="/">Page</a>
+          <a href="/">Page</a>
+        </div>
+        <div class="footer__column">
+          <span class="footer__topic">Topic</span>
+          <a href="/">Page</a>
+          <a href="/">Page</a>
+          <a href="/">Page</a>
+        </div>
+        <div class="footer__column">
+          <span class="footer__topic">Topic</span>
+          <a href="/">Page</a>
+          <a href="/">Page</a>
+          <a href="/">Page</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__social">
+      <a href="/"><img src={socialIcon1} alt="" /></a>
+      <a href="/"><img src={socialIcon2} alt="" /></a>
+      <a href="/"><img src={socialIcon3} alt="" /></a>
+      <a href="/"><img src={socialIcon4} alt="" /></a>
+    </div>
+  </footer>
+</body>
 </html>
+
+<style>
+  :root {
+    --color-text: #000000;
+    --color-muted: #828282;
+    --color-border: #e0e0e0;
+    --color-bg-soft: #f7f7f7;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --space-xs: 8px;
+    --space-s: 24px;
+    --space-m: 48px;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font-body); color: var(--color-text); }
+  a { color: inherit; text-decoration: none; }
+  h1, h2, h3, p { margin: 0; }
+
+  .nav {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40px 80px;
+  }
+  .nav--overlay { position: absolute; top: 0; left: 0; right: 0; z-index: 2; }
+  .nav__site-name { font-size: 20px; font-weight: 500; color: #fff; }
+  .nav__items { display: flex; align-items: center; gap: 48px; list-style: none; margin: 0; padding: 0; }
+  .nav__items a { font-size: 20px; font-weight: 500; color: #fff; }
+  .nav__button.nav__button, .nav__items .nav__button {
+    border: 2px solid #fff; border-radius: 8px; padding: 14px 24px; font-size: 16px;
+  }
+
+  .hero { position: relative; height: 720px; overflow: hidden; }
+  .hero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero__dimmer { position: absolute; inset: 0; background: rgba(0,0,0,0.24); }
+  .hero__copy {
+    position: absolute; left: 50%; top: 284px; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 40px;
+    width: 90%; max-width: 844px; text-align: center; color: #fff;
+  }
+  .hero__copy h1 { font-size: 64px; font-weight: 700; letter-spacing: -1.28px; line-height: 1.4; }
+  .hero__copy p { font-size: 24px; font-weight: 500; }
+
+  .button { display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 24px; font-weight: 500; padding: 20px 32px; }
+  .button--light { background: #000; color: #fff; }
+  .button--dark { background: #000; color: #fff; }
+  .button--block { width: 100%; border: none; cursor: pointer; font-family: inherit; }
+
+  .section { padding: 96px 80px; max-width: 1440px; margin: 0 auto; }
+  .section__heading { font-size: 48px; font-weight: 600; letter-spacing: -0.96px; margin-bottom: 48px; }
+
+  .article-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 48px 32px; }
+  .article-grid .card__image { aspect-ratio: 515 / 300; }
+
+  .whitepaper-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .whitepaper-grid__side { display: flex; flex-direction: column; gap: 24px; }
+  .card { display: flex; flex-direction: column; gap: 24px; }
+  .card--big { height: 100%; }
+  .card__image { background-color: var(--color-bg-soft); background-size: cover; background-position: center; border-radius: 8px; aspect-ratio: 1 / 1; }
+  .card--big .card__image { flex: 1; }
+  .whitepaper-grid__side .card__image { aspect-ratio: 515 / 283; }
+  .card__copy h3 { font-size: 24px; font-weight: 500; margin-bottom: 4px; }
+  .card__copy p { font-size: 20px; color: var(--color-muted); margin-bottom: 4px; }
+  .price { font-size: 20px; font-weight: 500; }
+
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+  .contact-form { display: flex; flex-direction: column; gap: 24px; }
+  .field-row { display: flex; gap: 32px; }
+  .field { display: flex; flex-direction: column; gap: 8px; flex: 1; font-size: 16px; font-weight: 500; }
+  .field input, .field textarea {
+    border: 1px solid var(--color-border); border-radius: 8px; padding: 12px 16px;
+    font-family: inherit; font-size: 16px; font-weight: 500; color: var(--color-text);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+  }
+  .contact-image { border-radius: 8px; background-size: cover; background-position: center; min-height: 400px; }
+
+  .footer { padding: 48px 80px; border-top: 1px solid var(--color-border); margin-top: 48px; }
+  .footer__top { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; margin-bottom: 32px; }
+  .footer__site-name { font-size: 24px; }
+  .footer__columns { display: flex; gap: 80px; }
+  .footer__column { display: flex; flex-direction: column; gap: 24px; }
+  .footer__topic { font-weight: 500; }
+  .footer__column a { color: #454545; }
+  .footer__social { display: flex; gap: 8px; }
+  .footer__social img { width: 24px; height: 24px; padding: 8px; }
+
+  @media (max-width: 900px) {
+    .nav, .section, .footer { padding-left: 24px; padding-right: 24px; }
+    .article-grid, .whitepaper-grid, .contact-grid { grid-template-columns: 1fr; }
+    .hero__copy h1 { font-size: 40px; }
+    .field-row { flex-direction: column; }
+    .footer__columns { gap: 40px; flex-wrap: wrap; }
+  }
+</style>
