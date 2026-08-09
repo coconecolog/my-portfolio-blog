@@ -1,0 +1,47 @@
+---
+import Card from "./Card.astro";
+
+export interface Props {
+  items: {
+    href: string;
+    image?: string;
+    title: string;
+    description?: string;
+    tags?: string[];
+  }[];
+  emptyText?: string;
+}
+const { items, emptyText = "該当する記事はまだありません。" } = Astro.props;
+---
+
+{items.length === 0 ? (
+  <p class="card-grid__empty">{emptyText}</p>
+) : (
+  <div class="card-grid">
+    {items.map((item) => (
+      <Card
+        href={item.href}
+        image={item.image}
+        title={item.title}
+        description={item.description}
+        tags={item.tags}
+      />
+    ))}
+  </div>
+)}
+
+<style>
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-m);
+  }
+  .card-grid__empty { color: var(--color-muted); font-size: 14px; }
+
+  @media (max-width: 900px) {
+    .card-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .card-grid { grid-template-columns: 1fr; }
+  }
+</style>
