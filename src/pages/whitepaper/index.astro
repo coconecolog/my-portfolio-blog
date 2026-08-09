@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TagList from "../../components/TagList.astro";
+import CardGrid from "../../components/CardGrid.astro";
+import { getCollection } from "astro:content";
+
+const papers = (await getCollection("whitepaper")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const allTags = [...new Set(papers.flatMap((p) => p.data.tags))].sort();
+
+const items = papers.map((p) => ({
+  href: `/whitepaper/${p.id}/`,
+  image: p.data.image,
+  title: p.data.title,
+  description: p.data.description,
+  tags: p.data.tags,
+}));
+---
+
+<BaseLayout title="White Paper" description="White Paperの一覧です。">
+  <main class="page">
+    <h1>White Paper</h1>
+    <TagList tags={allTags} basePath="/whitepaper/" />
+    <CardGrid items={items} emptyText="White Paperはまだありません。" />
+  </main>
+</BaseLayout>
+
+<style>
+  .page { max-width: var(--max-width); margin: 0 auto; padding: var(--space-l) var(--space-m); }
+  .page h1 { font-size: 32px; font-weight: 700; margin-bottom: var(--space-m); }
+</style>
