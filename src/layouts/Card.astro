@@ -1,0 +1,42 @@
+---
+// 一覧・関連表示 共通カード(ブログ・White Paper両方で使い回します)
+export interface Props {
+  href: string;
+  image?: string;
+  title: string;
+  description?: string;
+  tags?: string[];
+}
+const { href, image, title, description, tags = [] } = Astro.props;
+---
+
+<a class="card" href={href}>
+  <div class="card__image" style={image ? `background-image:url(${image})` : ""}></div>
+  <div class="card__body">
+    <h3>{title}</h3>
+    {description && <p>{description}</p>}
+    {tags.length > 0 && (
+      <ul class="card__tags">
+        {tags.map((tag) => <li>{tag}</li>)}
+      </ul>
+    )}
+  </div>
+</a>
+
+<style>
+  .card { display: flex; flex-direction: column; gap: var(--space-xs); }
+  .card__image {
+    background-color: var(--color-bg-soft);
+    background-size: cover; background-position: center;
+    border-radius: var(--radius-m);
+    aspect-ratio: 4 / 3;
+  }
+  .card__body h3 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .card__body p { font-size: 14px; color: var(--color-muted); }
+  .card__tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin-top: 4px; }
+  .card__tags li {
+    font-size: 12px; font-weight: 500; color: var(--color-accent);
+    background: var(--color-accent-soft);
+    padding: 3px 10px; border-radius: 999px;
+  }
+</style>
