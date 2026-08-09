@@ -19,7 +19,7 @@ const blog = defineCollection({
     // タグ: ブログ・White Paper共通の語彙で運用(自由入力の文字列配列)
     tags: z.array(z.string()).default([]),
     // この記事が誘導する White Paper(N:1。複数記事が同じ資料を指せます)
-    whitepaper: reference("whitepaper").optional(),
+    whitepaper: reference("whitepaper"),
   }),
 });
 
