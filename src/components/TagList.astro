@@ -1,0 +1,45 @@
+---
+// タグ一覧ナビゲーション(ブログ一覧・White Paper一覧 共通)
+export interface Props {
+  tags: string[];
+  basePath: string; // 例: "/blog/" or "/whitepaper/"
+  activeTag?: string;
+}
+const { tags, basePath, activeTag } = Astro.props;
+---
+
+<ul class="tag-list">
+  <li>
+    <a href={basePath} class:list={{ active: !activeTag }}>すべて</a>
+  </li>
+  {tags.map((tag) => (
+    <li>
+      <a
+        href={`${basePath}tag/${encodeURIComponent(tag)}/`}
+        class:list={{ active: activeTag === tag }}
+      >
+        {tag}
+      </a>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .tag-list {
+    display: flex; flex-wrap: wrap; gap: var(--space-xs);
+    list-style: none; margin-bottom: var(--space-m);
+  }
+  .tag-list a {
+    display: inline-block;
+    font-size: 13px; font-weight: 500;
+    padding: 6px 14px; border-radius: 999px;
+    border: 1px solid var(--color-border);
+    color: var(--color-muted);
+  }
+  .tag-list a.active,
+  .tag-list a:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: var(--color-accent-soft);
+  }
+</style>
