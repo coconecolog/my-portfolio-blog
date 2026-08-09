@@ -1,0 +1,54 @@
+---
+// ブログ タグ絞り込みページ(タグごとに静的生成)
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import TagList from "../../../components/TagList.astro";
+import CardGrid from "../../../components/CardGrid.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  const allTags = [...new Set(posts.flatMap((post) => post.data.tags))];
+
+  return allTags.map((tag) => ({
+    params: { tag },
+    props: { tag },
+  }));
+}
+
+const { tag } = Astro.props;
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .filter((post) => post.data.tags.includes(tag));
+
+const allTags = [...new Set((await getCollection("blog")).flatMap((post) => post.data.tags))].sort();
+
+const items = posts.map((post) => ({
+  href: `/blog/${post.id}/`,
+  image: post.data.heroImage,
+  title: post.data.title,
+  description: post.data.description,
+  tags: post.data.tags,
+}));
+---
+
+<BaseLayout title={`ブログ - ${tag}`} description={`「${tag}」タグの記事一覧です。`}>
+  <main class="page">
+    <h1>ブログ</h1>
+    <TagList tags={allTags} basePath="/blog/" activeTag={tag} />
+    <CardGrid items={items} emptyText={`「${tag}」タグの記事はまだありません。`} />
+  </main>
+</BaseLayout>
+
+<style>
+  .page {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--space-l) var(--space-m);
+  }
+  .page h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: var(--space-m);
+  }
+</style>
