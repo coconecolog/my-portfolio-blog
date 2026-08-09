@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import TagList from "../../../components/TagList.astro";
+import CardGrid from "../../../components/CardGrid.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const papers = await getCollection("whitepaper");
+  const allTags = [...new Set(papers.flatMap((p) => p.data.tags))];
+  return allTags.map((tag) => ({ params: { tag }, props: { tag } }));
+}
+
+const { tag } = Astro.props;
+
+const papers = (await getCollection("whitepaper"))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .filter((p) => p.data.tags.includes(tag));
+
+const allTags = [...new Set((await getCollection("whitepaper")).flatMap((p) => p.data.tags))].sort();
+
+const items = papers.map((p) => ({
+  href: `/whitepaper/${p.id}/`,
+  image: p.data.image,
+  title: p.data.title,
+  description: p.data.description,
+  tags: p.data.tags,
+}));
+---
+
+<BaseLayout title={`White Paper - ${tag}`} description={`「${tag}」タグのWhite Paper一覧です。`}>
+  <main class="page">
+    <h1>White Paper</h1>
+    <TagList tags={allTags} basePath="/whitepaper/" activeTag={tag} />
+    <CardGrid items={items} emptyText={`「${tag}」タグのWhite Paperはまだありません。`} />
+  </main>
+</BaseLayout>
+
+<style>
+  .page { max-width: var(--max-width); margin: 0 auto; padding: var(--space-l) var(--space-m); }
+  .page h1 { font-size: 32px; font-weight: 700; margin-bottom: var(--space-m); }
+</style>
