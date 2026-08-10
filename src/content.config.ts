@@ -30,6 +30,7 @@ const whitepaper = defineCollection({
     description: z.string(),
     pubDate: z.coerce.date(),
     image: z.string().optional(),
+    previewImages: z.array(z.string()).max(2).default([]),
     tags: z.array(z.string()).default([]),
     // ダウンロード対象ファイル(PDFなど)へのパス。/public/whitepapers/xxx.pdf のように配置想定。
     fileUrl: z.string(),
