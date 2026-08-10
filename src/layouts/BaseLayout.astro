@@ -11,6 +11,9 @@ const navItems = [
   { label: "White Paper", href: "/whitepaper/" },
   { label: "About", href: "/about/" },
 ];
+
+// フッターのみに表示する法務系リンク
+const legalItems = [{ label: "個人情報の取り扱い", href: "/privacy/" }];
 ---
 
 <html lang="ja">
@@ -36,6 +39,9 @@ const navItems = [
     <span class="site-footer__logo">Coconeco-log</span>
     <nav class="site-footer__nav">
       {navItems.map((item) => (
+        <a href={item.href}>{item.label}</a>
+      ))}
+      {legalItems.map((item) => (
         <a href={item.href}>{item.label}</a>
       ))}
     </nav>
