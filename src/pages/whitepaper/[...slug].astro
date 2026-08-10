@@ -5,62 +5,105 @@ import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
   const papers = await getCollection("whitepaper");
-  return papers.map((p) => ({
-    params: { slug: p.id },
-    props: { paper: p },
-  }));
+  return papers.map((p) => ({ params: { slug: p.id }, props: { paper: p } }));
 }
 
 const { paper } = Astro.props;
 const { Content } = await render(paper);
 
-// 関連するWhite Paper(同じタグを持つ他の資料)
+const departmentOptions = ["経営・企画", "マーケティング", "営業", "人事・総務", "情報システム", "その他"];
+const roleOptions = ["提案する立場", "承認する立場", "情報収集をしている立場", "その他"];
+
 const allPapers = await getCollection("whitepaper");
 const relatedPapers = allPapers
   .filter((p) => p.id !== paper.id && p.data.tags.some((tag) => paper.data.tags.includes(tag)))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3)
-  .map((p) => ({
-    href: `/whitepaper/${p.id}/`,
-    image: p.data.image,
-    title: p.data.title,
-    description: p.data.description,
-    tags: p.data.tags,
-  }));
+  .map((p) => ({ href: `/whitepaper/${p.id}/`, image: p.data.image, title: p.data.title, description: p.data.description, tags: p.data.tags }));
 
-// この資料を紹介しているブログ記事(N:1の逆引き)
 const allPosts = await getCollection("blog");
 const linkedPosts = allPosts
   .filter((post) => post.data.whitepaper.id === paper.id)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .map((post) => ({
-    href: `/blog/${post.id}/`,
-    image: post.data.heroImage,
-    title: post.data.title,
-    description: post.data.description,
-    tags: post.data.tags,
-  }));
+  .map((post) => ({ href: `/blog/${post.id}/`, image: post.data.heroImage, title: post.data.title, description: post.data.description, tags: post.data.tags }));
 ---
 
 <BaseLayout title={paper.data.title} description={paper.data.description}>
   <main class="page">
-    <header class="header">
-      <h1>{paper.data.title}</h1>
-      <p class="header__desc">{paper.data.description}</p>
-      {paper.data.tags.length > 0 && (
-        <ul class="tag-list">
-          {paper.data.tags.map((tag) => (
-            <li><a href={`/whitepaper/tag/${encodeURIComponent(tag)}/`}>{tag}</a></li>
-          ))}
-        </ul>
-      )}
-      <a class="button" href={paper.data.fileUrl} download>資料をダウンロード</a>
-    </header>
+    <h1 class="title">{paper.data.title}</h1>
 
-    {paper.data.image && (
-      <div class="hero">
-        <img src={paper.data.image} alt={paper.data.title} />
+    <div class="detail-grid">
+      <div class="preview-col">
+        {paper.data.image && (
+          <button class="preview-cover" data-lightbox-trigger data-full={paper.data.image}>
+            <img src={paper.data.image} alt={paper.data.title} />
+          </button>
+        )}
+        {paper.data.previewImages.length > 0 && (
+          <div class="preview-thumbs">
+            {paper.data.previewImages.map((src) => (
+              <button class="preview-thumb" data-lightbox-trigger data-full={src}>
+                <img src={src} alt="資料プレビュー" />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
+
+      <aside class="form-col">
+        <form class="lead-form">
+          <div class="field-row">
+            <label class="field">
+              <span>姓 <em>必須</em></span>
+              <input type="text" name="lastName" required />
+            </label>
+            <label class="field">
+              <span>名 <em>必須</em></span>
+              <input type="text" name="firstName" required />
+            </label>
+          </div>
+          <label class="field">
+            <span>会社名 <em>必須</em></span>
+            <input type="text" name="company" required />
+          </label>
+          <label class="field">
+            <span>メールアドレス <em>必須</em></span>
+            <input type="email" name="email" required />
+          </label>
+          <label class="field">
+            <span>部署区分 <em>必須</em></span>
+            <select name="department" required>
+              <option value="" disabled selected>選択してください</option>
+              {departmentOptions.map((opt) => <option value={opt}>{opt}</option>)}
+            </select>
+          </label>
+          <label class="field">
+            <span>役割 <em>必須</em></span>
+            <select name="role" required>
+              <option value="" disabled selected>選択してください</option>
+              {roleOptions.map((opt) => <option value={opt}>{opt}</option>)}
+            </select>
+          </label>
+
+          <label class="field">
+            <span>ご質問・ご要望など(任意)</span>
+            <textarea name="message" rows="4"></textarea>
+          </label>
+          <label class="consent">
+            <input type="checkbox" name="consent" required />
+            <span><a href="/privacy/">個人情報の取り扱い</a>に同意する <em>必須</em></span>
+          </label>
+          <button type="submit" class="button button--block">資料をダウンロード</button>
+        </form>
+      </aside>
+    </div>
+
+    {paper.data.tags.length > 0 && (
+      <ul class="tag-list">
+        {paper.data.tags.map((tag) => (
+          <li><a href={`/whitepaper/tag/${encodeURIComponent(tag)}/`}>{tag}</a></li>
+        ))}
+      </ul>
     )}
 
     <article class="body">
@@ -81,38 +124,67 @@ const linkedPosts = allPosts
       </section>
     )}
   </main>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox__close" id="lightboxClose" aria-label="閉じる">×</button>
+    <img id="lightboxImage" src="" alt="" />
+  </div>
 </BaseLayout>
+
+<script>
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImage = document.getElementById("lightboxImage");
+  const closeBtn = document.getElementById("lightboxClose");
+
+  document.querySelectorAll("[data-lightbox-trigger]").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      const full = el.dataset.full;
+      if (full && lightbox && lightboxImage) {
+        lightboxImage.src = full;
+        lightbox.classList.add("is-open");
+      }
+    });
+  });
+
+  const closeLightbox = () => lightbox?.classList.remove("is-open");
+  closeBtn?.addEventListener("click", closeLightbox);
+  lightbox?.addEventListener("click", (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+</script>
 
 <style>
   .page { max-width: var(--max-width); margin: 0 auto; padding: var(--space-l) var(--space-m); }
-
-  .header { max-width: 720px; margin: 0 auto var(--space-l); display: flex; flex-direction: column; gap: var(--space-s); }
-  .header h1 { font-size: 36px; font-weight: 700; line-height: 1.3; }
-  .header__desc { font-size: 17px; color: var(--color-muted); }
-
-  .tag-list { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; }
-  .tag-list a {
-    font-size: 12px; font-weight: 500; color: var(--color-accent);
-    background: var(--color-accent-soft);
-    padding: 3px 10px; border-radius: 999px;
-  }
-
-  .button {
-    align-self: flex-start;
-    background: var(--color-accent); color: #fff !important;
-    font-size: 14px; font-weight: 600;
-    padding: 12px 24px; border-radius: var(--radius-s);
-  }
-
-  .hero { margin-bottom: var(--space-l); }
-  .hero img { width: 100%; max-height: 420px; object-fit: cover; border-radius: var(--radius-m); }
-
-  .body {
-    max-width: 720px; margin: 0 auto var(--space-xl);
-    font-size: 17px; line-height: 1.8;
-    display: flex; flex-direction: column; gap: var(--space-s);
-  }
+  .title { font-size: 32px; font-weight: 700; line-height: 1.3; margin-bottom: var(--space-m); }
+  .detail-grid { display: grid; grid-template-columns: 1fr 380px; gap: var(--space-l); margin-bottom: var(--space-m); align-items: start; }
+  .preview-col { display: flex; flex-direction: column; gap: var(--space-s); }
+  .preview-cover, .preview-thumb { display: block; padding: 0; border: none; background: none; cursor: pointer; border-radius: var(--radius-m); overflow: hidden; }
+  .preview-cover img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius-m); }
+  .preview-thumbs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-s); }
+  .preview-thumb img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius-s); }
+  .form-col { border: 1px solid var(--color-border); border-radius: var(--radius-m); padding: var(--space-m); }
+  .lead-form { display: flex; flex-direction: column; gap: var(--space-s); }
+  .field-row { display: flex; gap: var(--space-s); }
+  .field { display: flex; flex-direction: column; gap: 6px; flex: 1; font-size: 13px; font-weight: 500; }
+  .field em { color: var(--color-accent); font-style: normal; font-weight: 500; font-size: 11px; margin-left: 4px; }
+  .field input, .field select, .field textarea { border: 1px solid var(--color-border); border-radius: var(--radius-s); padding: 10px 12px; font-family: inherit; font-size: 14px; color: var(--color-text); }
+  .consent { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--color-muted); }
+  .consent a { color: var(--color-accent); }
+  .consent em { color: var(--color-accent); font-style: normal; }
+  .button { display: inline-flex; align-items: center; justify-content: center; background: var(--color-accent); color: #fff !important; font-size: 14px; font-weight: 600; padding: 12px 24px; border-radius: var(--radius-s); border: none; cursor: pointer; font-family: inherit; }
+  .button--block { width: 100%; margin-top: 4px; }
+  .tag-list { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin-bottom: var(--space-l); }
+  .tag-list a { font-size: 12px; font-weight: 500; color: var(--color-accent); background: var(--color-accent-soft); padding: 3px 10px; border-radius: 999px; }
+  .body { max-width: 720px; margin: 0 auto var(--space-xl); font-size: 17px; line-height: 1.8; display: flex; flex-direction: column; gap: var(--space-s); }
   .body :global(h2) { font-size: 22px; font-weight: 700; margin-top: var(--space-s); }
-
+  .section { padding-top: var(--space-l); }
   .section__heading { font-size: 24px; font-weight: 700; margin-bottom: var(--space-m); }
+  .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); align-items: center; justify-content: center; z-index: 100; padding: var(--space-m); }
+  .lightbox.is-open { display: flex; }
+  .lightbox img { max-width: 90vw; max-height: 85vh; border-radius: var(--radius-s); }
+  .lightbox__close { position: absolute; top: var(--space-m); right: var(--space-m); background: none; border: none; color: #fff; font-size: 32px; cursor: pointer; line-height: 1; }
+  @media (max-width: 800px) {
+    .detail-grid { grid-template-columns: 1fr; }
+  }
 </style>
