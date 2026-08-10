@@ -14,6 +14,20 @@ export async function getStaticPaths() {
 const { paper } = Astro.props;
 const { Content } = await render(paper);
 
+// 関連するWhite Paper(同じタグを持つ他の資料)
+const allPapers = await getCollection("whitepaper");
+const relatedPapers = allPapers
+  .filter((p) => p.id !== paper.id && p.data.tags.some((tag) => paper.data.tags.includes(tag)))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3)
+  .map((p) => ({
+    href: `/whitepaper/${p.id}/`,
+    image: p.data.image,
+    title: p.data.title,
+    description: p.data.description,
+    tags: p.data.tags,
+  }));
+
 // この資料を紹介しているブログ記事(N:1の逆引き)
 const allPosts = await getCollection("blog");
 const linkedPosts = allPosts
@@ -52,6 +66,13 @@ const linkedPosts = allPosts
     <article class="body">
       <Content />
     </article>
+
+    {relatedPapers.length > 0 && (
+      <section class="section">
+        <h2 class="section__heading">関連するWhite Paper</h2>
+        <CardGrid items={relatedPapers} />
+      </section>
+    )}
 
     {linkedPosts.length > 0 && (
       <section class="section">
