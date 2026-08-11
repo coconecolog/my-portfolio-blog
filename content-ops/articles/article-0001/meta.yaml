@@ -1,0 +1,19 @@
+id: article-0001
+cycle_id: cycle-01
+keyword: "3年で2倍 KPI 中期経営計画"
+search_intent: "3年で売上・事業規模を2倍にするという目標は現実的か、達成している企業がどのような考え方でKPIを設計しているのかを知りたい"
+target_reader: "B2B企業(SaaS/製造/サービス業等)の経営層・事業企画責任者。取締役会や経営会議から『3年で2倍』の中期目標を課され、実現方法・KPI設計の進め方に悩んでいる"
+funnel_stage: "情報収集期"
+cluster: "A: 中期成長目標・複利成長率"
+role: "サイクルテーマそのものを扱うピラー記事(ユーザー指定)。『経営層への説得ロジック(複利成長率・逆算思考)』と『実務への落とし込み(KPIツリー等)』の橋渡しポジションを狙う"
+wp_link:
+  mode: new
+  reason: "wp-catalog.yamlにwhitepaperの登録がなく(whitepapers: [])、theme/funnel_stageが一致する既存WPが存在しないため新規作成。ピラー記事の主題(3年2倍のKPI設計)に対応する診断チェックリスト等のWPを想定"
+status:
+  interview: pending
+  outline: pending
+  writing: pending
+  wp: pending
+  review: pending
+  published: false
+history: []

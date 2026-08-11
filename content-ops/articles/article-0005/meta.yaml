@@ -1,0 +1,19 @@
+id: article-0005
+cycle_id: cycle-01
+keyword: "LTV CAC 計算方法 目安"
+search_intent: "LTVとCACの具体的な計算式、LTV/CAC比の目安(3倍等)、CAC回収期間の考え方を知り、自社の実務に落とし込みたい"
+target_reader: "マーケティング責任者・事業企画担当者。ユニットエコノミクスを踏まえた成長計画を検討している"
+funnel_stage: "導入検討期"
+cluster: "C: LTV/CAC・ユニットエコノミクス"
+role: "導入検討期読者の『自社のリソースで実行可能な計画に落とし込めるか』という不安に、具体的な計算式で応える実務系記事"
+wp_link:
+  mode: new
+  reason: "wp-catalog.yamlに既存WPなし。LTV/CAC計算シート等の実務ツールWPが導線として有効なため新規作成を提案"
+status:
+  interview: pending
+  outline: pending
+  writing: pending
+  wp: pending
+  review: pending
+  published: false
+history: []

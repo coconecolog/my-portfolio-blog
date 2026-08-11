@@ -1,0 +1,19 @@
+id: article-0002
+cycle_id: cycle-01
+keyword: "売上2倍 年率 CAGR 計算方法"
+search_intent: "3年で2倍を達成するために必要な年平均成長率(CAGR)をどう計算すればよいか、具体的な計算式を知りたい"
+target_reader: "事業企画・経営企画担当者。中期経営計画の数値目標設定を任されている"
+funnel_stage: "情報収集期"
+cluster: "A: 中期成長目標・複利成長率"
+role: "article-0001(ピラー)の情報収集期読者が持つ『そもそも2倍成長は無謀ではないか』という不安に、複利成長率の計算式という具体で応える補完記事。ピラーへの内部導線を想定"
+wp_link:
+  mode: new
+  reason: "wp-catalog.yamlに既存WPなし。article-0001と主題が近接するため、WP自体は共通化(同一WPへのリンク)を将来検討可能だが、計画時点でWP未作成のためmode: newとして記録"
+status:
+  interview: pending
+  outline: pending
+  writing: pending
+  wp: pending
+  review: pending
+  published: false
+history: []

@@ -1,0 +1,28 @@
+id: article-0006
+cycle_id: cycle-01
+keyword: "BtoBマーケティング KPI設計 MQL SQL"
+search_intent: "リード獲得数・商談化率・受注率などファネル各段階のKPIをどう設計すればよいか、MQL/SQLの定義を含めて具体的に知りたい"
+target_reader: "BtoBマーケティング責任者・実務担当者。ファネル設計とKPI運用を任されている"
+funnel_stage: "導入検討期"
+cluster: "D: ファネル設計・BtoBマーケティングKPI"
+role: "導入検討期読者の『進捗をどうモニタリングし軌道修正するか』という懸念に、ファネル別KPIの具体的な定義・運用方法で応える"
+wp_link:
+  mode: new
+  reason: "wp-catalog.yamlに既存WPなし。MQL/SQL定義シートやファネルKPIダッシュボードのテンプレートWPを新規作成候補とする"
+status:
+  interview: done
+  outline: pending
+  writing: pending
+  wp: pending
+  review: pending
+  published: false
+history:
+  - date: 2026-08-11
+    agent: interview-agent
+    note: >
+      新規ヒアリング実施(library.yamlに使い回し可能な体験談なし、exp-001として新規登録)。
+      体験談は「KPIツリー不在・営業非協力のBtoBマーケ組織を1年で立て直した」という一次情報。
+      編集方針: この体験談を記事内で主役(前段)として扱い、後段でHubSpotの営業・マーケ連携効果や
+      SATORI/Cloud CIRCUSのBtoB MA改善事例などの市場データで裏付ける構成にする。
+      市場データはinterview.mdに含めず、article-research-diff工程で別途扱う。
+      outline担当は「体験談→データによる裏付け」の流れを軸に構成すること。

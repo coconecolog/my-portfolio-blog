@@ -1,0 +1,19 @@
+id: article-0004
+cycle_id: cycle-01
+keyword: "逆算思考 経営計画 マイルストーン設計"
+search_intent: "3年後のゴールから逆算して、年次・四半期単位のマイルストーンを設計する方法を知りたい"
+target_reader: "経営層・事業責任者。中期計画のロードマップ作成を担当している"
+funnel_stage: "比較検討期"
+cluster: "E: 逆算思考・マイルストーン設計"
+role: "ピラー記事(article-0001)の『逆算思考』要素を深掘りする記事。比較検討期読者の『KPIを設定しても現場が形骸化する』という懸念に応える"
+wp_link:
+  mode: new
+  reason: "wp-catalog.yamlに既存WPなし。3年計画ロードマップの記入用テンプレートを新規作成候補とする"
+status:
+  interview: pending
+  outline: pending
+  writing: pending
+  wp: pending
+  review: pending
+  published: false
+history: []

@@ -1,0 +1,19 @@
+id: article-0003
+cycle_id: cycle-01
+keyword: "KPIツリー 作り方 KGI KSF"
+search_intent: "KGIをKPIまで分解する具体的な手順を知りたい。KGI/KSF/KPIの違いを理解し、自社の目標をKPIツリーに落とし込みたい"
+target_reader: "経営企画・事業企画担当者、部門マネージャー。中期目標を現場のKPIに分解する役割を担う"
+funnel_stage: "比較検討期"
+cluster: "B: KPIツリー・KGI/KSF設計"
+role: "競合の多くがKPIツリー解説+テンプレート配布で読者を獲得しているレッドオーシャン領域だが、検索ボリュームが見込めるため必須トピックとして採用"
+wp_link:
+  mode: new
+  reason: "wp-catalog.yamlに既存WPなし。KPIツリーテンプレート(Excel/スプレッドシート等)のダウンロード資料が親和性高く新規作成を提案"
+status:
+  interview: pending
+  outline: pending
+  writing: pending
+  wp: pending
+  review: pending
+  published: false
+history: []

@@ -1,7 +1,12 @@
 # 体験談の再利用インデックス。
 # interview-agent が、新規ヒアリング前にここを検索して使い回しを提案します。
 
-entries: []
+entries:
+  - id: exp-001
+    summary: "KPIツリー不在・営業非協力のBtoBマーケ組織を1年かけて立て直した話(問い合わせ経路可視化・HOTリード通知・営業連携再構築)"
+    tags: ["KPI設計", "MQL", "SQL", "営業マーケ連携", "ファネル設計", "MA活用"]
+    used_in: [article-0006]
+    body_ref: content-ops/articles/article-0006/interview.md
 
 # 記入例:
 # entries:

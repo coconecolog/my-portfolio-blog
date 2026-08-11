@@ -1,0 +1,81 @@
+cycle_id: cycle-01
+cycle_theme: "3年で2倍を達成するKPIの考え方"
+
+# 本数の考え方:
+# - research.mdのクラスタA〜Fのうち、クラスタF(新規事業KPI)は「将来拡張候補」と明記されているため
+#   本サイクルでは見送り、クラスタA〜Eをカバーする6本を提案。
+# - クラスタAはユーザー指定の1本目ピラー記事に加え、情報収集期の読者不安
+#   (「そもそも2倍成長は無謀ではないか」)に直接応える補完記事(CAGR計算)を1本追加し計2本。
+# - クラスタB〜Eは各1本ずつとし、比較検討期2本・導入検討期2本とファネル段階のバランスを取った。
+# - wp-catalog.yamlのwhitepapersが空(登録WPなし)のため、全記事のwp_linkはmode: newとなる。
+
+articles:
+  - id: article-0001
+    keyword: "3年で2倍 KPI 中期経営計画"
+    search_intent: "3年で売上・事業規模を2倍にするという目標は現実的か、達成している企業がどのような考え方でKPIを設計しているのかを知りたい"
+    target_reader: "B2B企業(SaaS/製造/サービス業等)の経営層・事業企画責任者。取締役会や経営会議から『3年で2倍』の中期目標を課され、実現方法・KPI設計の進め方に悩んでいる"
+    funnel_stage: "情報収集期"
+    cluster: "A: 中期成長目標・複利成長率"
+    role: "サイクルテーマそのものを扱うピラー記事(ユーザー指定)。競合分析より『経営層への説得ロジック(複利成長率・逆算思考)』と『実務への落とし込み(KPIツリー等)』の橋渡しポジションを狙う"
+    wp_link:
+      mode: new
+      reason: "wp-catalog.yamlにwhitepaperの登録がなく(whitepapers: [])、theme/funnel_stageが一致する既存WPが存在しないため新規作成。ピラー記事の主題(3年2倍のKPI設計)に対応する診断チェックリスト等のWPを想定"
+
+  - id: article-0002
+    keyword: "売上2倍 年率 CAGR 計算方法"
+    search_intent: "3年で2倍を達成するために必要な年平均成長率(CAGR)をどう計算すればよいか、具体的な計算式を知りたい"
+    target_reader: "事業企画・経営企画担当者。中期経営計画の数値目標設定を任されている"
+    funnel_stage: "情報収集期"
+    cluster: "A: 中期成長目標・複利成長率"
+    role: "article-0001(ピラー)の情報収集期読者が持つ『そもそも2倍成長は無謀ではないか』という不安に、複利成長率の計算式という具体で応える補完記事。ピラーへの内部導線を想定"
+    wp_link:
+      mode: new
+      reason: "wp-catalog.yamlに既存WPなし。article-0001と主題が近接するため、WP自体は共通化(同一WPへのリンク)を将来検討可能だが、計画時点でWP未作成のためmode: newとして記録"
+
+  - id: article-0003
+    keyword: "KPIツリー 作り方 KGI KSF"
+    search_intent: "KGIをKPIまで分解する具体的な手順を知りたい。KGI/KSF/KPIの違いを理解し、自社の目標をKPIツリーに落とし込みたい"
+    target_reader: "経営企画・事業企画担当者、部門マネージャー。中期目標を現場のKPIに分解する役割を担う"
+    funnel_stage: "比較検討期"
+    cluster: "B: KPIツリー・KGI/KSF設計"
+    role: "競合の多くがKPIツリー解説+テンプレート配布で読者を獲得しているレッドオーシャン領域だが、検索ボリュームが見込めるため必須トピックとして採用"
+    wp_link:
+      mode: new
+      reason: "wp-catalog.yamlに既存WPなし。KPIツリーテンプレート(Excel/スプレッドシート等)のダウンロード資料が親和性高く新規作成を提案"
+
+  - id: article-0004
+    keyword: "逆算思考 経営計画 マイルストーン設計"
+    search_intent: "3年後のゴールから逆算して、年次・四半期単位のマイルストーンを設計する方法を知りたい"
+    target_reader: "経営層・事業責任者。中期計画のロードマップ作成を担当している"
+    funnel_stage: "比較検討期"
+    cluster: "E: 逆算思考・マイルストーン設計"
+    role: "ピラー記事(article-0001)の『逆算思考』要素を深掘りする記事。比較検討期読者の『KPIを設定しても現場が形骸化する』という懸念に応える"
+    wp_link:
+      mode: new
+      reason: "wp-catalog.yamlに既存WPなし。3年計画ロードマップの記入用テンプレートを新規作成候補とする"
+
+  - id: article-0005
+    keyword: "LTV CAC 計算方法 目安"
+    search_intent: "LTVとCACの具体的な計算式、LTV/CAC比の目安(3倍等)、CAC回収期間の考え方を知り、自社の実務に落とし込みたい"
+    target_reader: "マーケティング責任者・事業企画担当者。ユニットエコノミクスを踏まえた成長計画を検討している"
+    funnel_stage: "導入検討期"
+    cluster: "C: LTV/CAC・ユニットエコノミクス"
+    role: "導入検討期読者の『自社のリソースで実行可能な計画に落とし込めるか』という不安に、具体的な計算式で応える実務系記事"
+    wp_link:
+      mode: new
+      reason: "wp-catalog.yamlに既存WPなし。LTV/CAC計算シート等の実務ツールWPが導線として有効なため新規作成を提案"
+
+  - id: article-0006
+    keyword: "BtoBマーケティング KPI設計 MQL SQL"
+    search_intent: "リード獲得数・商談化率・受注率などファネル各段階のKPIをどう設計すればよいか、MQL/SQLの定義を含めて具体的に知りたい"
+    target_reader: "BtoBマーケティング責任者・実務担当者。ファネル設計とKPI運用を任されている"
+    funnel_stage: "導入検討期"
+    cluster: "D: ファネル設計・BtoBマーケティングKPI"
+    role: "導入検討期読者の『進捗をどうモニタリングし軌道修正するか』という懸念に、ファネル別KPIの具体的な定義・運用方法で応える"
+    wp_link:
+      mode: new
+      reason: "wp-catalog.yamlに既存WPなし。MQL/SQL定義シートやファネルKPIダッシュボードのテンプレートWPを新規作成候補とする"
+
+excluded_clusters:
+  - cluster: "F: 事業計画・新規事業KPI"
+    reason: "research.mdにて『将来拡張候補』と明記されており、本サイクルの優先度は他クラスタより低いと判断し見送り。次サイクル以降での記事化を検討"
