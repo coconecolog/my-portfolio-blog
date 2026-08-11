@@ -1,0 +1,21 @@
+# 既存White Paper一覧。
+# article-outliner / cycle-planner が、新規WP作成か既存流用かを判定する際にここを検索します。
+# src/content/whitepaper/ に実際にWhite Paperを追加・公開したら、ここにも手動またはwp-writer経由で追記してください。
+#
+# フィールド対応(実際のcontent.config.tsのwhitepaperコレクションと対応させること):
+#   slug            -> src/content/whitepaper/{slug}.md のファイル名
+#   title           -> frontmatterのtitle
+#   theme           -> frontmatterのtags(判定用の独自ラベル。tagsと完全一致でなくてよい)
+#   target_funnel_stage -> このcontent-ops運用のための独自メタ情報(Astro側スキーマには存在しない)
+
+whitepapers: []
+
+# 記入例:
+# whitepapers:
+#   - id: wp-0001
+#     title: "はじめてのWeb集客チェックリスト"
+#     slug: web-shukyaku-checklist
+#     theme: ["Web集客", "問い合わせ導線"]
+#     target_funnel_stage: "情報収集期"  # 情報収集期 / 比較検討期 / 導入検討期
+#     status: published
+#     linked_article_ids: []

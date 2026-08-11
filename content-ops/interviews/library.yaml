@@ -1,0 +1,12 @@
+# 体験談の再利用インデックス。
+# interview-agent が、新規ヒアリング前にここを検索して使い回しを提案します。
+
+entries: []
+
+# 記入例:
+# entries:
+#   - id: exp-001
+#     summary: "展示会後のリード対応が遅く失注した経験"
+#     tags: ["営業効率化", "リード対応", "失敗談"]
+#     used_in: [article-0003]
+#     body_ref: content-ops/articles/article-0003/interview.md
