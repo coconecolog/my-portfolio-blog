@@ -11,11 +11,12 @@ wp_link:
   reason: "wp-catalog.yamlに既存WPなし。MQL/SQL定義シートやファネルKPIダッシュボードのテンプレートWPを新規作成候補とする"
 status:
   interview: done
-  outline: pending
-  writing: pending
-  wp: pending
-  review: pending
-  published: false
+  research_diff: done
+  outline: approved
+  writing: done
+  wp: done
+  review: done
+  published: true
 history:
   - date: 2026-08-11
     agent: interview-agent
@@ -26,3 +27,113 @@ history:
       SATORI/Cloud CIRCUSのBtoB MA改善事例などの市場データで裏付ける構成にする。
       市場データはinterview.mdに含めず、article-research-diff工程で別途扱う。
       outline担当は「体験談→データによる裏付け」の流れを軸に構成すること。
+  - date: 2026-08-11
+    agent: article-research-diff
+    note: >
+      差分リサーチ実施、research-diff.mdに保存。直接競合記事(Debono/ファネルAi/cocorobi/SATORI/スタジアム等)と
+      検索意図の詳細を追加。ユーザー提示の4つの市場データ主張を検証した結果、
+      (1)マーケ・営業アライン効果36%/38%は数値自体は複数メディアで裏付けあり、
+      ただし出典はHubSpot単独ではなくAberdeen Group(2012年頃)/MarketingProfsが一次に近く、
+      年代が古い点も含め出典表記を訂正して使用可。
+      (2)HOTリード限定運用による営業関係好転、(3)コンテンツ再配分による商談化率/通電率の具体的改善幅、
+      (4)アトリビューションによるノウハウ記事CVRほぼ0%/比較資料CV7割、の3点はSATORI/Cloud CIRCUS等の
+      一次事例として出典確認できず「未検証」。捏造を避けるため、(2)-(4)は体験談(interview.md)の
+      実数値・一次情報を記事の主軸とし、外部データは定性的な傍証としてのみ補強する方針を明記。
+      次はarticle-outlinerへ。
+  - date: 2026-08-11
+    agent: article-outliner
+    note: >
+      outline.md作成。体験談(状況→四半期ごとのアクション→結果)を記事の主役とし、
+      検証済みの市場データ(顧客保持率36%高・成約率38%高、出典: Aberdeen Group/MarketingProfs、
+      2012年頃と古い点も明記)を裏付けとして配置、未検証の3主張は数値を使わず
+      体験談の実数値(前年比105〜110%、商談化率向上等)または出典つき定性的傍証にとどめる構成にした。
+      競合記事(Debono/ファネルAi/cocorobi/SATORI/スタジアム)がフレームワーク解説中心で
+      一人称の失敗談・営業との合意形成プロセスを書いていない点を差別化ポイントとして
+      専用H2章を設けた。
+      WP誘導はwp-catalog.yamlのwhitepapersが0件(空配列)であることを確認した上でmode: newを維持。
+      新規WP候補名は「MQL/SQL定義シート＆KPIツリーテンプレート」とし、本文中盤・チェックリスト章末・
+      まとめ章末の3箇所にCTA案を配置。
+      status.outlineをdraftedに更新。承認は人間が行うため、ここで停止し次工程(article-writer)には進んでいない。
+  - date: 2026-08-11
+    agent: article-outliner
+    note: >
+      ユーザーフィードバックにより outline.md を全面作り直し。恒久ルールとして
+      .claude/agents/article-outliner.md に追記された「PREP法」「H2は5〜6個程度」
+      「本文4000文字以内」に基づき再構成した。
+      PREP法・見出し数削減・4000文字ルールに基づき再構成:
+      H2を7個から5個(Point→Reason→Example[体験談+データ]→Point再提示→まとめ)に削減し、
+      体験談は四半期(1Q〜4Q)の詳細を書き出さず「何をして・何が変わったか」の要点のみに凝縮、
+      市場データは検証済みの「顧客保持率36%高・成約率38%高」(出典: Aberdeen Group/MarketingProfs、
+      2012年頃)の1件のみを数値として使用し、他3件は数値を使わず必要な範囲で定性的な一言に留めた。
+      各H2に目安文字数を付し、合計約3500〜4300字を目安として本文4000字以内に収まるよう調整。
+      WP誘導判定(mode: new、新規WP候補「MQL/SQL定義シート＆KPIツリーテンプレート」)は前回と
+      同じ結論を踏襲しつつ、判断理由は改めて記載した。
+      status.outlineはdraftedのまま維持。承認は人間が行うため、ここで停止し次工程(article-writer)には進んでいない。
+  - date: 2026-08-11
+    agent: human
+    note: >
+      outline.md(PREP法再構成版)を承認。status.outlineをapprovedに更新。次はarticle-writerへ。
+  - date: 2026-08-11
+    agent: article-writer
+    note: >
+      draft.mdを作成。outline.mdのPREP構成(結論→理由→体験談+データ→チェックリスト→まとめ)を
+      そのまま踏襲し、H2見出し5個で執筆した。体験談は四半期の詳細を書き出さず、
+      「流入経路分析→HOTリード定義と営業への即時通知→実績ベースでのMQL/SQL合意」という
+      要点のみに凝縮して自然に組み込んだ。市場データは検証済みの「顧客保持率36%高・成約率38%高」
+      (出典: Aberdeen Group/MarketingProfs、2012年頃)の1件のみを数値として使用し、
+      未検証の3主張(HOTリード限定運用の効果、コンテンツ再配分の改善幅、アトリビューションのCVR差)は
+      数値化せず体験談内の定性的な記述にとどめた。outline.mdのCTA文言案3箇所
+      (体験談+データ章末の軽い言及、チェックリスト章末のメインCTA、まとめ章末の再訴求)を
+      該当箇所にそのまま配置した。本文文字数(見出し・CTA・タイトル/meta descriptionを除く)を
+      手動で概算した結果、約2,300字程度で4000字以内に収まっていることを確認した。
+      タイトル案・meta description案をdraft.mdのfrontmatterに記載した。
+      status.writingをdoneに更新。wp_link.mode: newのため、次はwp-writerへ進む。
+  - date: 2026-08-11
+    agent: wp-writer
+    note: >
+      wp-draft.mdを作成。wp_link.mode: newを確認した上で、記事の主張「定義より営業との合意形成・運用」
+      と一貫性を持たせ、営業と一緒に埋めながら合意するワークシート形式のWhite Paperとして構成した。
+      Step1〜4(流入経路棚卸しシート/ホットリード基準定義シート/MQL・SQL定義シート〔マーケ・営業の
+      合意欄つき〕/KPIツリーテンプレート)+運用チェックリスト+記事の体験談ベースの記入例、という
+      全7章構成とし、各シートの記入項目・要点を明記した。wp-catalog.yamlのwhitepapersが空配列で
+      あることを確認し、wp-idはwp-0001として新規採番(連番の継続開始)。wp-catalog.yamlへの実際の
+      追記はarticle-reviewer通過後の昇格時に行うため、追記予定のYAMLブロックをwp-draft.md末尾の
+      制作メモに記載するにとどめ、wp-catalog.yaml自体はまだ更新していない。
+      実ファイル(Excel/PDF等)の作成は人間が別途対応する前提。
+      status.wpをdoneに更新。次はarticle-reviewerへ進む。
+  - date: 2026-08-11
+    agent: article-reviewer
+    note: >
+      5観点(誤字脱字・言い過ぎ表現/事実確認/SEO要件/WP誘導文とCTAの整合性/体験談の反映)で校正を実施し、
+      review-notes.mdに出力。
+      事実確認: draft.md内の数値のうち、外部データとして使われているのは「顧客保持率36%高・成約率38%高
+      (出典: Aberdeen Group/MarketingProfs、2012年頃)」の1件のみで、research-diff.mdの検証結果と
+      出典表記が一致していることを確認。それ以外の数値(約200件・通電率18%・前年比105〜110%等)は
+      すべてinterview.md由来の体験談固有の実数値であり、未検証の市場データの混入・捏造は見つからなかった。
+      体験談の反映: interview.mdの状況・アクション・結果が具体的な固有情報を伴ってdraft.mdに反映されており、
+      テンプレ化は見られなかった。四半期の詳細省略はユーザー指示通りで問題なし。
+      文字数: draft.md本文(見出し・CTA含む、frontmatterのtitle/description除く)は概算約2,600〜3,000字で
+      4000字以内の制約に収まっていることを確認。
+      WP誘導文とCTAの整合性: 3箇所のCTAはいずれもwp-draft.mdのStep構成と矛盾なく対応していることを確認。
+      SEO要件: タイトル・meta description・キーワード含有は問題なし。ただし、チェックリスト章の3項目
+      (draft.md 38・41・44行目)がoutline.mdで想定していたH3見出しではなく `**太字**` 段落として実装されて
+      おり、見出し階層(H2>H3)としてカウントされない点を要修正として指摘した。
+      この1点以外は指摘なし。status.reviewはin_progressのまま維持し、修正後の再チェックを人間に依頼する。
+  - date: 2026-08-11
+    agent: article-reviewer
+    note: >
+      前回指摘(チェックリスト章3項目のH3見出し化)の修正を反映し、5観点の再チェック(簡易)を実施。
+      draft.md 38・41・44行目が `**太字**` から `### 1. ...` `### 2. ...` `### 3. ...` のH3見出しに
+      修正されており、見出しテキストもoutline.mdのH3見出し文言と完全一致していることを確認。
+      H2「明日から使えるKPIツリー設計・MQL/SQL定義のチェックリスト」配下にH3が3つぶら下がる正しい
+      見出し階層になった。テキスト内容自体は変更されていないため、他4観点(誤字脱字・言い過ぎ表現/
+      事実確認/WP誘導文とCTAの整合性/体験談の反映)に影響がないことも確認した。
+      review-notes.mdを更新し、総合判定を「指摘なし: 公開可能」に変更。status.reviewをdoneに更新。
+  - date: 2026-08-11
+    agent: human
+    note: >
+      draft.mdをsrc/content/blog/btob-marketing-kpi-mql-sql-design.mdxへ、
+      wp-draft.mdをsrc/content/whitepaper/mql-sql-definition-kpi-tree-template.mdへ昇格。
+      画像・実ファイル未用意のため、heroImage/imageは未設定、fileUrlは"#"のプレースホルダーで公開。
+      wp-catalog.yamlにwp-0001(status: draft)を追記。status.publishedをtrueに更新。
+      実ファイル(WPのExcel/PDF等)とheroImageが用意でき次第、該当箇所を差し替える必要あり。

@@ -8,7 +8,14 @@
 #   theme           -> frontmatterのtags(判定用の独自ラベル。tagsと完全一致でなくてよい)
 #   target_funnel_stage -> このcontent-ops運用のための独自メタ情報(Astro側スキーマには存在しない)
 
-whitepapers: []
+whitepapers:
+  - id: wp-0001
+    title: "MQL/SQL定義シート＆KPIツリーテンプレート"
+    slug: mql-sql-definition-kpi-tree-template
+    theme: ["BtoBマーケティング", "KPI設計", "MQL/SQL定義", "KPIツリー"]
+    target_funnel_stage: "導入検討期"
+    status: draft
+    linked_article_ids: ["article-0006"]
 
 # 記入例:
 # whitepapers:

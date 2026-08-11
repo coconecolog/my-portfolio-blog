@@ -6,7 +6,16 @@
       "Bash(git push *)",
       "WebSearch",
       "WebFetch(domain:www.brainpartner.co.jp)",
-      "WebFetch(domain:loglass.jp)"
+      "WebFetch(domain:loglass.jp)",
+      "WebFetch(domain:satori.marketing)",
+      "WebFetch(domain:ma.ferret-one.com)",
+      "WebFetch(domain:www.be-dash.co.jp)",
+      "WebFetch(domain:debono.co.jp)",
+      "Bash(npx astro *)",
+      "PowerShell(npx astro check 2>&1)",
+      "PowerShell(Get-Command node -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Command npm -ErrorAction SilentlyContinue)",
+      "Bash(where node *)"
     ]
   }
 }
